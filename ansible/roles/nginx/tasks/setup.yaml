@@ -1,0 +1,30 @@
+---
+- name: Install Nginx
+  apt: name="{{ item }}" state=latest update_cache=yes
+  loop:
+    - nginx
+
+- name: Copy default VHost file
+  copy:
+    src: ../files/nginx_default_template.conf
+    dest: "{{nginx.default_file}}"
+    owner: www-data
+    group: www-data
+    mode: 0644
+
+- name: Create snippets dir
+  file:
+    path: /etc/nginx/snippets
+    state: directory
+
+- name: Copy snippets
+  synchronize:
+    src: roles/nginx/files/snippets
+    dest: /etc/nginx
+    mode: push
+  notify: Restart Nginx
+
+- name: Unlink default dir
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent

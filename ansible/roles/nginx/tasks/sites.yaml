@@ -1,0 +1,22 @@
+---
+- name: Add Nginx config
+  copy:
+    src: "{{nginx.default_file}}"
+    dest: /etc/nginx/sites-available/{{item.url}}.conf
+    remote_src: true
+  with_items: "{{sites}}"
+
+- name: Customize Nginx config
+  replace:
+    path: /etc/nginx/sites-available/{{item.url}}.conf
+    regexp: 'some-site.com'
+    replace: "{{item.url}}"
+  with_items: "{{sites}}"
+
+- name: Enable Nginx site
+  file:
+    src: /etc/nginx/sites-available/{{item.url}}.conf
+    path: /etc/nginx/sites-enabled/{{item.url}}.conf
+    state: link
+  with_items: "{{sites}}"
+  notify: Restart Nginx

@@ -1,0 +1,11 @@
+nginx:
+  default_file: /etc/nginx/sites-available/default.conf
+
+apache2:
+  default_file: /etc/apache2/sites-available/default.conf
+
+
+sites:
+  - url: beatthebetters.com
+    user: frontend
+    static: true

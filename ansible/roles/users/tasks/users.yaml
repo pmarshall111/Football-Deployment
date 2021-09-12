@@ -1,0 +1,22 @@
+---
+- name: Add 'public_html' and 'logs' dir to /etc/skel
+  file: path="/etc/skel/{{ item }}" state=directory
+  loop:
+    - public_html
+    - logs
+
+- name: Add users
+  user:
+    name: "{{item.user}}"
+    shell: /bin/false
+    skeleton: /etc/skel
+  with_items: "{{sites}}"
+
+- name: Ensure logs ownership is correct
+  file:
+    path: /home/{{item.user}}/logs
+    state: directory
+    recurse: yes
+    owner: "{{item.user}}"
+    group: "{{item.user}}"
+  with_items: "{{sites}}"

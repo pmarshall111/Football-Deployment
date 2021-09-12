@@ -1,0 +1,33 @@
+---
+- name: Add Apache2 config
+  copy:
+    src: "{{apache2.default_file}}"
+    dest: /etc/apache2/sites-available/{{item.url}}.conf
+    remote_src: true
+  when: item.static|bool
+  with_items: "{{sites}}"
+
+- name: Customize Apache2 config site
+  replace:
+    path: /etc/apache2/sites-available/{{item.url}}.conf
+    regexp: 'SITE_NAME'
+    replace: "{{item.url}}"
+  when: item.static|bool
+  with_items: "{{sites}}"
+
+- name: Customize Apache2 config user
+  replace:
+    path: /etc/apache2/sites-available/{{item.url}}.conf
+    regexp: 'SITE_USER'
+    replace: "{{item.user}}"
+  when: item.static|bool
+  with_items: "{{sites}}"
+
+- name: Enable Apache2 site
+  file:
+    src: /etc/apache2/sites-available/{{item.url}}.conf
+    path: /etc/apache2/sites-enabled/{{item.url}}.conf
+    state: link
+  when: item.static|bool
+  with_items: "{{sites}}"
+  notify: Restart Apache2
