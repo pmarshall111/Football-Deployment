@@ -22,14 +22,14 @@ resource "aws_security_group" "ec2_group" {
     from_port = 80
     protocol = "TCP"
     to_port = 80
-    cidr_blocks = ["${var.my-IP}/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
     from_port = 443
     protocol = "TCP"
     to_port = 443
-    cidr_blocks = ["${var.my-IP}/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {

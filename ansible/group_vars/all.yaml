@@ -6,6 +6,6 @@ apache2:
 
 
 sites:
-  - url: beatthebetters.com
+  - url: football.petersprojects.co.uk
     user: frontend
     static: true

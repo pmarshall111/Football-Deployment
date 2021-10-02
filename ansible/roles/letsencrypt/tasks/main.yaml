@@ -1,0 +1,45 @@
+---
+- name: Install Certbot
+  apt: name="{{ item }}" state=latest update_cache=yes
+  loop:
+    - certbot
+
+- name: Register new certificates for sites
+  shell: "certbot certonly --webroot -w /var/www/html -d {{item.url}} -d www.{{item.url}} --register-unsafely-without-email --non-interactive --agree-tos"
+  with_items: "{{sites}}"
+
+- name: Add config to make certbot reload nginx if it renews a cert
+  copy:
+    src: ../files/cli.ini
+    dest: /etc/letsencrypt/cli.ini
+
+- name: Register which sites have LetsEncrypt certs
+  stat:
+    path: /etc/letsencrypt/live/{{item.url}}/cert.pem
+  register: letsencrypt_certs
+  with_items: "{{sites}}"
+
+- name: Edit Nginx conf for sites with LetsEncrypt certs to use cert (comment out snakeoil cert)
+  replace:
+    path: /etc/nginx/sites-available/{{item.item.url}}.conf
+    regexp: '^\s*include /etc/nginx/snippets/snakeoil.conf;$'
+    replace: "# include /etc/nginx/snippets/snakeoil.conf;"
+  when: item.stat.exists == true
+  with_items: "{{letsencrypt_certs.results}}"
+
+- name: Edit Nginx conf for sites with LetsEncrypt certs to use cert (uncomment letsencrypt cert)
+  replace:
+    path: /etc/nginx/sites-available/{{item.item.url}}.conf
+    regexp: '^\s*#\s*ssl_certificate(.+);$'
+    replace: 'ssl_certificate\1;'
+  when: item.stat.exists == true
+  with_items: "{{letsencrypt_certs.results}}"
+
+- name: Edit Nginx conf for sites with LetsEncrypt certs to use cert (uncomment letsencrypt cert key)
+  replace:
+    path: /etc/nginx/sites-available/{{item.item.url}}.conf
+    regexp: '^\s*#\s*ssl_certificate_key(.+);$'
+    replace: 'ssl_certificate_key\1;'
+  when: item.stat.exists == true
+  with_items: "{{letsencrypt_certs.results}}"
+  notify: Reload Nginx
