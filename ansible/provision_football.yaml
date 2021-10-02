@@ -1,10 +1,10 @@
 ---
-- name: Install nginx, apache2 and create user for frontend
+- name: Install nginx, apache2, tomcat and create user for frontend
   hosts: aws_instance
   become: true
 
   roles:
 #    - users
-#    - nginx
+    - nginx
 #    - apache2
-    - tomcat
+#    - tomcat

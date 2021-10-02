@@ -6,11 +6,17 @@
 
 - name: Copy default VHost file
   copy:
-    src: ../files/nginx_default_template.conf
+    src: ../files/default_template.conf
     dest: "{{nginx.default_file}}"
     owner: www-data
     group: www-data
     mode: 0644
+
+- name: Copy VHost for port 80 to redirect requests to port 443
+  copy:
+    src: ../files/redirect_port_80_to_443.conf
+    dest: /etc/nginx/sites-available/default
+  notify: Restart Nginx
 
 - name: Create snippets dir
   file:
@@ -23,8 +29,3 @@
     dest: /etc/nginx
     mode: push
   notify: Restart Nginx
-
-- name: Unlink default dir
-  file:
-    path: /etc/nginx/sites-enabled/default
-    state: absent
