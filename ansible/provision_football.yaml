@@ -4,6 +4,7 @@
   become: true
 
   roles:
-    - users
-    - nginx
-    - apache2
+#    - users
+#    - nginx
+#    - apache2
+    - tomcat

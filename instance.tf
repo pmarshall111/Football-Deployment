@@ -32,6 +32,13 @@ resource "aws_security_group" "ec2_group" {
     cidr_blocks = ["${var.my-IP}/32"]
   }
 
+  ingress {
+    from_port = 8000
+    protocol = "TCP"
+    to_port = 8000
+    cidr_blocks = ["${var.my-IP}/32"]
+  }
+
   egress {
 //    allow all.yaml outbound traffic
     from_port        = 0
