@@ -6,6 +6,7 @@
 
 - name: Register new certificates for sites
   shell: "certbot certonly --webroot -w /var/www/html -d {{item.url}} -d www.{{item.url}} --register-unsafely-without-email --non-interactive --agree-tos"
+  changed_when: false
   with_items: "{{sites}}"
 
 - name: Add config to make certbot reload nginx if it renews a cert

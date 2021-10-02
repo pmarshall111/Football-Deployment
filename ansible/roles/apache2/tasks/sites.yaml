@@ -4,6 +4,7 @@
     src: "{{apache2.default_file}}"
     dest: /etc/apache2/sites-available/{{item.url}}.conf
     remote_src: true
+    force: no
   when: item.static|bool
   with_items: "{{sites}}"
 

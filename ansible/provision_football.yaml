@@ -4,8 +4,8 @@
   become: true
 
   roles:
-#    - users
-#    - nginx
-#    - apache2
-#    - tomcat
+    - users
+    - nginx
+    - apache2
+    - tomcat
     - letsencrypt

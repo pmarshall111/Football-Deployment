@@ -4,6 +4,7 @@
     src: "{{nginx.default_file}}"
     dest: /etc/nginx/sites-available/{{item.url}}.conf
     remote_src: true
+    force: no
   with_items: "{{sites}}"
 
 - name: Customize Nginx config
