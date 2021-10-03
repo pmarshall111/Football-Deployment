@@ -8,3 +8,5 @@ sudo chmod 700 /home/ansible/.ssh
 sudo chmod 600 /home/ansible/.ssh/authorized_keys
 #add passwordless sudo privileges
 echo "ansible  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ansible
+#update packages
+sudo apt update

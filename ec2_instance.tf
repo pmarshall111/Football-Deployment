@@ -7,7 +7,7 @@ variable "sec_group_name" {
 }
 
 variable "key_name" {
-  default = "Dell Ubuntu 20.04 LTS"
+  default = "Dell Ubuntu 20.04"
 }
 
 resource "aws_security_group" "ec2_group" {
@@ -40,7 +40,7 @@ resource "aws_security_group" "ec2_group" {
   }
 
   egress {
-//    allow all.yaml outbound traffic
+//    allow all outbound traffic
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -70,7 +70,7 @@ output "ec2_IP" {
   value = aws_instance.ec2_instance.public_ip
 }
 
-resource "aws_key_pair" "one_of_my_many_keys" {
+resource "aws_key_pair" "nopass" {
   key_name = var.key_name
   public_key = file("/home/peter/.ssh/nopass.pub")
 }
