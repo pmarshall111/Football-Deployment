@@ -26,3 +26,9 @@
     group: www-data
     mode: 0644
   notify: Restart Apache2
+
+- name: Start and enable Apache2
+  service:
+    name: apache2
+    state: started
+    enabled: yes

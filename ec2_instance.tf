@@ -55,6 +55,10 @@ resource "aws_security_group" "ec2_group" {
   }
 }
 
+resource "aws_eip" "ec2_ip" {
+  instance = aws_instance.ec2_instance.id
+}
+
 resource "aws_instance" "ec2_instance" {
   instance_type = "t2.micro"
   ami = "ami-096cb92bb3580c759"
