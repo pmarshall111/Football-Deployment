@@ -11,7 +11,7 @@
   replace:
     path: /etc/tomcat9/tomcat-users.xml
     regexp: '^</tomcat-users>$'
-    replace: '<role rolename="manager-gui"/><user username="peter" password="{{ lookup("env", "TOMCAT_PASS") }}" roles="manager-gui" /></tomcat-users>'
+    replace: '<role rolename="manager-gui"/><user username="peter" password="{{ TOMCAT_PASS }}" roles="manager-gui" /></tomcat-users>'
   notify: Restart Tomcat
 
 - name: Set Tomcat to run on port 8000

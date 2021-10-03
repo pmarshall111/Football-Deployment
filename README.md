@@ -18,5 +18,5 @@ terraform apply
 ```bash
 cd ansible
 sudo su ansible
-ansible-playbook provision_football.yaml 
+ansible-playbook provision_football.yaml --extra-vars "TOMCAT_PASS=__your_password__"
 ```
