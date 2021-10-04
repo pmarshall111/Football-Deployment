@@ -8,7 +8,7 @@
 - name: Add users
   user:
     name: "{{item.user}}"
-    shell: /bin/false
+    shell: /bin/bash
     skeleton: /etc/skel
   when: item.user
   with_items: "{{sites}}"

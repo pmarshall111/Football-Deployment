@@ -11,11 +11,12 @@ variable "key_name" {
 }
 
 resource "aws_security_group" "ec2_group" {
+//  SSH access allowed from anywhere so GitHub Actions can deploy. Server has key only authentication.
   ingress {
     from_port = 22
     protocol = "TCP"
     to_port = 22
-    cidr_blocks = ["${var.my-IP}/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
