@@ -4,7 +4,7 @@
   loop:
     - nginx
 
-- name: Copy default VHost file
+- name: Copy default VHost file for sites that proxy back to Apache2
   copy:
     src: ../files/default_template.conf
     dest: "{{nginx.default_file}}"
@@ -17,6 +17,14 @@
     src: ../files/redirect_port_80_to_443.conf
     dest: /etc/nginx/sites-available/default
   notify: Restart Nginx
+
+- name: Copy VHost file for sites that proxy back to Tomcat
+  copy:
+    src: ../files/api_template.conf
+    dest: "{{nginx.api_file}}"
+    owner: www-data
+    group: www-data
+    mode: 0644
 
 - name: Create snippets dir
   file:

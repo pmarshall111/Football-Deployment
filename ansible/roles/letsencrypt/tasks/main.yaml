@@ -7,6 +7,13 @@
 - name: Register new certificates for sites
   shell: "certbot certonly --webroot -w /var/www/html -d {{item.url}} -d www.{{item.url}} --register-unsafely-without-email --non-interactive --agree-tos"
   changed_when: false
+  when: not item.isApi
+  with_items: "{{sites}}"
+
+- name: Register new certificates for APIs
+  shell: "certbot certonly --webroot -w /var/www/html -d {{item.url}} --register-unsafely-without-email --non-interactive --agree-tos"
+  changed_when: false
+  when: item.isApi
   with_items: "{{sites}}"
 
 - name: Add config to make certbot reload nginx if it renews a cert
@@ -25,7 +32,7 @@
     path: /etc/nginx/sites-available/{{item.item.url}}.conf
     regexp: '^\s*include /etc/nginx/snippets/snakeoil.conf;$'
     replace: "# include /etc/nginx/snippets/snakeoil.conf;"
-  when: item.stat.exists == true
+  when: item.stat.exists
   with_items: "{{letsencrypt_certs.results}}"
 
 - name: Edit Nginx conf for sites with LetsEncrypt certs to use cert (uncomment letsencrypt cert)

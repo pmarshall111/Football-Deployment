@@ -1,11 +1,16 @@
 nginx:
   default_file: /etc/nginx/sites-available/default.conf
+  api_file: /etc/nginx/sites-available/tomcat-proxy-default.conf
 
 apache2:
   default_file: /etc/apache2/sites-available/default.conf
 
-
 sites:
   - url: football.petersprojects.co.uk
     user: frontend
-    static: true
+    isApi: false
+    tomcat_endpoint: null
+  - url: api.football.petersprojects.co.uk
+    user: null
+    isApi: true
+    tomcat_endpoint: football

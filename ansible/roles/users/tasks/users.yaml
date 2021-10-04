@@ -10,6 +10,7 @@
     name: "{{item.user}}"
     shell: /bin/false
     skeleton: /etc/skel
+  when: item.user
   with_items: "{{sites}}"
 
 - name: Ensure logs ownership is correct
@@ -19,4 +20,5 @@
     recurse: yes
     owner: "{{item.user}}"
     group: "{{item.user}}"
+  when: item.user
   with_items: "{{sites}}"

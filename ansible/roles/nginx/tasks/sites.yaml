@@ -1,10 +1,20 @@
 ---
-- name: Add Nginx config
+- name: Add Nginx config for sites that proxy back to Apache2
   copy:
     src: "{{nginx.default_file}}"
     dest: /etc/nginx/sites-available/{{item.url}}.conf
     remote_src: true
     force: no
+  when: not item.isApi
+  with_items: "{{sites}}"
+
+- name: Add Nginx config for sites that proxy back to Tomcat
+  copy:
+    src: "{{nginx.api_file}}"
+    dest: /etc/nginx/sites-available/{{item.url}}.conf
+    remote_src: true
+    force: no
+  when: item.isApi
   with_items: "{{sites}}"
 
 - name: Customize Nginx config
@@ -14,7 +24,15 @@
     replace: "{{item.url}}"
   with_items: "{{sites}}"
 
-- name: Enable Nginx site
+- name: Add tomcat endpoint to Nginx file
+  replace:
+    path: /etc/nginx/sites-available/{{item.url}}.conf
+    regexp: 'ENDPOINT'
+    replace: "{{item.tomcat_endpoint}}"
+  when: item.isApi
+  with_items: "{{sites}}"
+
+- name: Enable Nginx sites
   file:
     src: /etc/nginx/sites-available/{{item.url}}.conf
     path: /etc/nginx/sites-enabled/{{item.url}}.conf
