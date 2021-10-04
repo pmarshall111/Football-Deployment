@@ -1,0 +1,34 @@
+---
+- name: Include Terraform variables used to setup the DB
+  include_vars:
+    file: ../../../../terraform.tfvars.json
+    name: terraform_vars
+
+- name: Create dir for Tomcat scripts
+  file:
+    path: /var/lib/tomcat9/bin/
+    state: directory
+    mode: 0755
+
+- name: Create script for Tomcat to register env variables
+  file:
+    path: /var/lib/tomcat9/bin/setenv.sh
+    state: file
+
+- name: Set RDS URL as environment variable to allow Football Betting API to connect
+  lineinfile:
+    path: /var/lib/tomcat9/bin/setenv.sh
+    line: "export FOOTBALL_DB_URL={{tf_rds_url}}"
+  notify: Restart Tomcat
+
+- name: Set DB user as environment variable to allow Football Betting API to connect
+  lineinfile:
+    path: /var/lib/tomcat9/bin/setenv.sh
+    line: "export FOOTBALL_DB_USER={{terraform_vars.db_username}}"
+  notify: Restart Tomcat
+
+- name: Set DB password as environment variable to allow Football Betting API to connect
+  lineinfile:
+    path: /var/lib/tomcat9/bin/setenv.sh
+    line: "export FOOTBALL_DB_PASS={{terraform_vars.db_password}}"
+  notify: Restart Tomcat

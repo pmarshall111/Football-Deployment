@@ -1,22 +1,3 @@
 ---
-- name: Install Tomcat
-  apt: name="{{ item }}" state=latest update_cache=yes
-  loop:
-    - default-jdk
-    - tomcat9
-    - tomcat9-admin
-  notify: Restart Tomcat
-
-- name: Allow access to admin page
-  replace:
-    path: /etc/tomcat9/tomcat-users.xml
-    regexp: '^</tomcat-users>$'
-    replace: '<role rolename="manager-gui"/><user username="peter" password="{{ TOMCAT_PASS }}" roles="manager-gui" /></tomcat-users>'
-  notify: Restart Tomcat
-
-- name: Set Tomcat to run on port 8000
-  replace:
-    path: /etc/tomcat9/server.xml
-    regexp: 'port="8080"'
-    replace: 'port="8000"'
-  notify: Restart Tomcat
+- include: setup.yaml
+- include: env-vars.yaml
