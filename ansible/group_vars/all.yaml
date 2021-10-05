@@ -10,7 +10,9 @@ sites:
     user: frontend
     isApi: false
     tomcat_endpoint: null
+    ssh_key_name: github-actions-frontend
   - url: api.football.petersprojects.co.uk
-    user: null
+    user: tomcat-github-actions
     isApi: true
     tomcat_endpoint: football
+    ssh_key_name: github-actions-tomcat

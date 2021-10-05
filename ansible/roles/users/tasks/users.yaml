@@ -1,9 +1,10 @@
 ---
-- name: Add 'public_html' and 'logs' dir to /etc/skel
+- name: Add 'public_html', 'logs' and '.ssh' dir to /etc/skel
   file: path="/etc/skel/{{ item }}" state=directory
   loop:
     - public_html
     - logs
+    - .ssh
 
 - name: Add users
   user:

@@ -1,0 +1,6 @@
+---
+- name: Grant tomcat-github-actions user access to restart Tomcat
+  copy:
+    dest: /etc/sudoers.d/tomcat-github-actions
+    content: |
+      tomcat-github-actions ALL=(ALL) NOPASSWD:/bin/systemctl restart tomcat9

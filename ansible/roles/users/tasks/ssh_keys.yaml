@@ -1,0 +1,8 @@
+---
+- name: Add SSH key to target users authorized_keys file
+  authorized_key:
+    user: "{{item.user}}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/{{item.ssh_key_name}}.pub') }}"
+  when: item.ssh_key_name
+  with_items: "{{sites}}"
