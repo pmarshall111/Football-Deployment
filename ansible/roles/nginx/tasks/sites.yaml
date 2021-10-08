@@ -5,7 +5,9 @@
     dest: /etc/nginx/sites-available/{{item.url}}.conf
     remote_src: true
     force: no
-  when: not item.isApi
+  when:
+    - item.url
+    - not item.isApi
   with_items: "{{sites}}"
 
 - name: Add Nginx config for sites that proxy back to Tomcat
@@ -14,7 +16,9 @@
     dest: /etc/nginx/sites-available/{{item.url}}.conf
     remote_src: true
     force: no
-  when: item.isApi
+  when:
+    - item.url
+    - item.isApi
   with_items: "{{sites}}"
 
 - name: Customize Nginx config
@@ -22,6 +26,7 @@
     path: /etc/nginx/sites-available/{{item.url}}.conf
     regexp: 'some-site.com'
     replace: "{{item.url}}"
+  when: item.url
   with_items: "{{sites}}"
 
 - name: Add tomcat endpoint to Nginx file
@@ -29,7 +34,9 @@
     path: /etc/nginx/sites-available/{{item.url}}.conf
     regexp: 'ENDPOINT'
     replace: "{{item.tomcat_endpoint}}"
-  when: item.isApi
+  when:
+    - item.url
+    - item.isApi
   with_items: "{{sites}}"
 
 - name: Enable Nginx sites
@@ -37,5 +44,6 @@
     src: /etc/nginx/sites-available/{{item.url}}.conf
     path: /etc/nginx/sites-enabled/{{item.url}}.conf
     state: link
+  when: item.url
   with_items: "{{sites}}"
   notify: Restart Nginx

@@ -5,7 +5,9 @@
     dest: /etc/apache2/sites-available/{{item.url}}.conf
     remote_src: true
     force: no
-  when: not item.isApi
+  when:
+    - item.url
+    - not item.isApi
   with_items: "{{sites}}"
 
 - name: Customize Apache2 config site
@@ -13,7 +15,9 @@
     path: /etc/apache2/sites-available/{{item.url}}.conf
     regexp: 'SITE_NAME'
     replace: "{{item.url}}"
-  when: not item.isApi
+  when:
+    - item.url
+    - not item.isApi
   with_items: "{{sites}}"
 
 - name: Customize Apache2 config user
@@ -21,7 +25,9 @@
     path: /etc/apache2/sites-available/{{item.url}}.conf
     regexp: 'SITE_USER'
     replace: "{{item.user}}"
-  when: not item.isApi
+  when:
+    - item.url
+    - not item.isApi
   with_items: "{{sites}}"
 
 - name: Enable Apache2 site
@@ -29,6 +35,8 @@
     src: /etc/apache2/sites-available/{{item.url}}.conf
     path: /etc/apache2/sites-enabled/{{item.url}}.conf
     state: link
-  when: not item.isApi
+  when:
+    - item.url
+    - not item.isApi
   with_items: "{{sites}}"
   notify: Restart Apache2
