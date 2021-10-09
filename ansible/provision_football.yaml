@@ -9,3 +9,4 @@
     - apache2
     - tomcat
     - letsencrypt
+    - application-specific

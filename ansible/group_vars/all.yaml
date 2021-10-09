@@ -5,6 +5,7 @@ nginx:
 apache2:
   default_file: /etc/apache2/sites-available/default.conf
 
+# These usernames may be hardcoded in the Ansible role 'application-specific', so please ensure to change these throughout the project.
 sites:
   - url: football.petersprojects.co.uk
     user: frontend

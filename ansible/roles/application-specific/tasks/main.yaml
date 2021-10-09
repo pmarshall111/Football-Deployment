@@ -1,0 +1,3 @@
+---
+- include: football-api.yaml
+- include: football-core.yaml

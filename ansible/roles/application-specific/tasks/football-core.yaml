@@ -1,0 +1,51 @@
+---
+# This deps dir is used in the cronjobs of the football-core project.
+- name: Create dependencies dir for Football-core
+  file:
+    state: directory
+    path: /home/football-core/deps
+    mode: '0755'
+    owner: football-core
+    group: football-core
+
+- name: Add MariaDB connector to football-core dependencies dir
+  copy:
+    src: ../files/mariadb-java-client-2.7.4.jar
+    dest: /home/football-core/deps/mariadb-java-client-2.7.4.jar
+    mode: '0644'
+    owner: football-core
+    group: football-core
+
+- name: Include Terraform variables used to setup the DB
+  include_vars:
+    file: ../../../../terraform.tfvars.json
+    name: terraform_vars
+
+- name: Create file for RDS environment variables
+  file:
+    path: /home/football-core/.environment
+    state: touch
+    mode: 0400
+    owner: football-core
+    group: football-core
+  changed_when: False
+
+- name: Set RDS URL as environment variable to allow Football Betting API to connect
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export DB_URL={{tf_rds_url}}"
+
+- name: Set DB name as environment variable to allow Football Betting API to connect
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export DB_NAME=football_betting"
+
+- name: Set DB user as environment variable to allow Football Betting API to connect
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export DB_USER={{terraform_vars.db_username}}"
+
+- name: Set DB password as environment variable to allow Football Betting API to connect
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export DB_PASS={{terraform_vars.db_password}}"

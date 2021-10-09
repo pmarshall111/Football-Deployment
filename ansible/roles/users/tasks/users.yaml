@@ -24,3 +24,15 @@
   when: item.user
   with_items: "{{sites}}"
 
+- name: Set up logrotate for log files
+  copy:
+    content: |
+      /home/{{item.user}}/logs/*.log {
+        missingok
+        notifempty
+        rotate 4
+        create 644 {{item.user}} {{item.user}}
+        size 10k
+      }
+    dest: /etc/logrotate.d/{{item.user}}
+  with_items: "{{sites}}"
