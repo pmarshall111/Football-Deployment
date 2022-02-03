@@ -8,14 +8,6 @@
     owner: football-core
     group: football-core
 
-- name: Add MariaDB connector to football-core dependencies dir
-  copy:
-    src: ../files/mariadb-java-client-2.7.4.jar
-    dest: /home/football-core/deps/mariadb-java-client-2.7.4.jar
-    mode: '0644'
-    owner: football-core
-    group: football-core
-
 - name: Include Terraform variables used to setup the DB
   include_vars:
     file: ../../../../terraform.tfvars.json

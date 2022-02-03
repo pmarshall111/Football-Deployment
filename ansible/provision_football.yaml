@@ -8,5 +8,6 @@
     - nginx
     - apache2
     - tomcat
+    - octave
     - letsencrypt
     - application-specific
