@@ -22,22 +22,32 @@
     group: football-core
   changed_when: False
 
-- name: Set RDS URL as environment variable to allow Football Betting API to connect
+- name: Set RDS URL as environment variable to allow Football Core & Betting API to connect
   lineinfile:
     path: /home/football-core/.environment
     line: "export DB_URL={{tf_rds_url}}"
 
-- name: Set DB name as environment variable to allow Football Betting API to connect
+- name: Set DB name as environment variable to allow Football Core & Betting API to connect
   lineinfile:
     path: /home/football-core/.environment
     line: "export DB_NAME=football_betting"
 
-- name: Set DB user as environment variable to allow Football Betting API to connect
+- name: Set DB user as environment variable to allow Football Core & Betting API to connect
   lineinfile:
     path: /home/football-core/.environment
     line: "export DB_USER={{terraform_vars.db_username}}"
 
-- name: Set DB password as environment variable to allow Football Betting API to connect
+- name: Set DB password as environment variable to allow Football Core & Betting API to connect
   lineinfile:
     path: /home/football-core/.environment
     line: "export DB_PASS={{terraform_vars.db_password}}"
+
+- name: Set Octave predictor path as environment variable to allow Football Core to predict matches
+  lineinfile:
+    path: /home/football-core/.environment
+    line: " export OCTAVE_PREDICT_FILE=/home/football-core/octave-prediction/logisticRegression/FootballTrainingProbabilitiesScorePredict.m"
+
+- name: Set Octave predictor theta path as an environment variable to allow Football Core to predict matches
+  lineinfile:
+    path: /home/football-core/.environment
+    line: " export OCTAVE_THETA_PATH=/home/football-core/octave-prediction/logisticRegression/logistic_regression_thetas.csv"
