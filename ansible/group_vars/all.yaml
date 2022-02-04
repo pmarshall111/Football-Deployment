@@ -22,3 +22,11 @@ sites:
     isApi: false
     tomcat_endpoint: null
     ssh_key_name: football-core
+
+octave_prediction:
+  predict_url: /home/football-core/octave-prediction/logisticRegression/FootballTrainingProbabilitiesScorePredict.m
+  predict_thetas_location: /home/football-core/octave-prediction/logisticRegression/logistic_regression_thetas.csv
+
+scrape_deps:
+  directory: /home/football-core/deps
+  chromedriver: /home/football-core/deps/chromedriver

@@ -1,0 +1,24 @@
+---
+- name: Get current version of Google Chrome
+  shell: google-chrome --version | awk -F ' ' '{ print $3 }'
+  register: chrome_version
+  changed_when: false
+
+- name: Check if Chromedriver already exists
+  stat:
+    path: "{{ scrape_deps.chromedriver }}"
+  register: chromedriver_location
+
+- name: Download Chromedriver for the current version of Google Chrome
+  unarchive:
+    remote_src: yes
+    src: "https://chromedriver.storage.googleapis.com/{{ chrome_version.stdout }}/chromedriver_linux64.zip"
+    dest: "{{ scrape_deps.directory }}"
+  when: chromedriver_location.stat.exists == False
+
+- name: Make Chromedriver owned by football-core and add executable perms
+  file:
+    path: "{{ scrape_deps.chromedriver }}"
+    mode: '0555'
+    owner: football-core
+    group: football-core

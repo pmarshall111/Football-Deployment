@@ -1,5 +1,5 @@
 ---
-- name: Install nginx, apache2, tomcat and create user for frontend
+- name: Install all dependencies required for the Frontend, API and Core modules
   hosts: aws_instance
   become: true
 
@@ -11,3 +11,4 @@
     - octave
     - letsencrypt
     - application-specific
+    - chromedriver

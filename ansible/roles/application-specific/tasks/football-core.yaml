@@ -3,7 +3,7 @@
 - name: Create dependencies dir for Football-core
   file:
     state: directory
-    path: /home/football-core/deps
+    path: "{{ scrape_deps.directory }}"
     mode: '0755'
     owner: football-core
     group: football-core
@@ -25,7 +25,7 @@
 - name: Set RDS URL as environment variable to allow Football Core & Betting API to connect
   lineinfile:
     path: /home/football-core/.environment
-    line: "export DB_URL={{tf_rds_url}}"
+    line: "export DB_URL={{ tf_rds_url }}"
 
 - name: Set DB name as environment variable to allow Football Core & Betting API to connect
   lineinfile:
@@ -35,19 +35,24 @@
 - name: Set DB user as environment variable to allow Football Core & Betting API to connect
   lineinfile:
     path: /home/football-core/.environment
-    line: "export DB_USER={{terraform_vars.db_username}}"
+    line: "export DB_USER={{ terraform_vars.db_username }}"
 
 - name: Set DB password as environment variable to allow Football Core & Betting API to connect
   lineinfile:
     path: /home/football-core/.environment
-    line: "export DB_PASS={{terraform_vars.db_password}}"
+    line: "export DB_PASS={{ terraform_vars.db_password }}"
 
 - name: Set Octave predictor path as environment variable to allow Football Core to predict matches
   lineinfile:
     path: /home/football-core/.environment
-    line: " export OCTAVE_PREDICT_FILE=/home/football-core/octave-prediction/logisticRegression/FootballTrainingProbabilitiesScorePredict.m"
+    line: "export OCTAVE_PREDICT_FILE={{ octave_prediction.predict_url }}"
 
 - name: Set Octave predictor theta path as an environment variable to allow Football Core to predict matches
   lineinfile:
     path: /home/football-core/.environment
-    line: " export OCTAVE_THETA_PATH=/home/football-core/octave-prediction/logisticRegression/logistic_regression_thetas.csv"
+    line: "export OCTAVE_THETA_PATH={{ octave_prediction.predict_thetas_location }}"
+
+- name: Set Chromedriver location as an environment variable to allow Football Core to place bets and scrape odds
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export CHROMEDRIVER_PATH={{ scrape_deps.chromedriver }}"
