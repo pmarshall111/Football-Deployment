@@ -18,48 +18,6 @@ resource "aws_default_vpc" "default" {
     Name = "Default VPC"
   }
 }
-//resource "aws_subnet" "rds-private1" {
-//  vpc_id     = aws_default_vpc.default.id
-//  cidr_block = "172.31.48.0/20"
-//  availability_zone = "eu-west-2a"
-//
-//  tags = {
-//    Name = "terraform-private-subnet"
-//  }
-//}
-//resource "aws_subnet" "rds-private2" {
-//  vpc_id     = aws_default_vpc.default.id
-//  cidr_block = "172.31.64.0/20"
-//  availability_zone = "eu-west-2b"
-//
-//  tags = {
-//    Name = "terraform-private-subnet"
-//  }
-//}
-//resource "aws_route_table" "rds-private" {
-//  vpc_id = aws_default_vpc.default.id
-//  tags = {
-//    Name = "terraform-private-subnet-route-table"
-//  }
-//}
-//
-//resource "aws_route_table_association" "rds-private1" {
-//  subnet_id      = aws_subnet.rds-private1.id
-//  route_table_id = aws_route_table.rds-private.id
-//}
-//resource "aws_route_table_association" "rds-private2" {
-//  subnet_id      = aws_subnet.rds-private2.id
-//  route_table_id = aws_route_table.rds-private.id
-//}
-//
-//resource "aws_db_subnet_group" "rds-private-group" {
-//  name       = "rds private subnet group"
-//  subnet_ids = [aws_subnet.rds-private1.id, aws_subnet.rds-private2.id]
-//
-//  tags = {
-//    Name = "terraform"
-//  }
-//}
 
 resource "aws_security_group" "rds-security-group" {
   name = "terraform-rds-sg"

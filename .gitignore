@@ -3,3 +3,4 @@
 *.tfvars.json
 TerraformFootball.iml
 tf_ansible_vars.yaml
+football_core_secrets.json

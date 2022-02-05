@@ -13,6 +13,11 @@
     file: ../../../../terraform.tfvars.json
     name: terraform_vars
 
+- name: Include variables used to send emails and place bets
+  include_vars:
+    file: ../files/football_core_secrets.json
+    name: email_and_bet_secrets
+
 - name: Create file for RDS environment variables
   file:
     path: /home/football-core/.environment
@@ -56,3 +61,28 @@
   lineinfile:
     path: /home/football-core/.environment
     line: "export CHROMEDRIVER_PATH={{ scrape_deps.chromedriver }}"
+
+- name: Set admin email for Football Core to send notifications to
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export ADMIN_EMAIL={{ email_and_bet_secrets.admin_email.username }}"
+
+- name: Set email for Football Core to send emails from
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export SENDING_EMAIL_ACC={{ email_and_bet_secrets.sending_email.username }}"
+
+- name: Set password for Football Core to send emails from
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export SENDING_EMAIL_PASS={{ email_and_bet_secrets.sending_email.password }}"
+
+- name: Set email for Unibet account
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export UNIBET_USER={{ email_and_bet_secrets.unibet.username }}"
+
+- name: Set password for Unibet account
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export UNIBET_PASS={{ email_and_bet_secrets.unibet.password }}"
