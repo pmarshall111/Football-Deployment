@@ -29,4 +29,4 @@ octave_prediction:
 
 scrape_deps:
   directory: /home/football-core/deps
-  chromedriver: /home/football-core/deps/chromedriver
+  geckodriver: /home/football-core/deps/geckodriver

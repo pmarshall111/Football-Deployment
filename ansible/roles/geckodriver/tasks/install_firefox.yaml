@@ -1,0 +1,6 @@
+---
+- name: Install Firefox
+  apt:
+    update-cache: yes
+    name: firefox
+    state: present

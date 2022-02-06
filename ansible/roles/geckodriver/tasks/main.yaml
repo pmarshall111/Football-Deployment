@@ -1,0 +1,3 @@
+---
+- include: install_firefox.yaml
+- include: install_geckodriver.yaml
