@@ -1,22 +1,18 @@
 ---
-# This deps dir is used in the cronjobs of the football-core project.
-- name: Create dependencies dir for Football-core
-  file:
-    state: directory
-    path: "{{ scrape_deps.directory }}"
-    mode: '0755'
-    owner: football-core
-    group: football-core
-
 - name: Include Terraform variables used to setup the DB
   include_vars:
     file: ../../../../terraform.tfvars.json
     name: terraform_vars
 
-- name: Include variables used to send emails and place bets
+- name: Include variables used to send emails
   include_vars:
-    file: ../files/football_core_secrets.json
-    name: email_and_bet_secrets
+    file: ../files/email_secrets.json
+    name: email_secrets
+
+- name: Include variables used to place bets
+  include_vars:
+    file: ../files/betfair_secrets.json
+    name: betfair_secrets
 
 - name: Create file for RDS environment variables
   file:
@@ -57,32 +53,58 @@
     path: /home/football-core/.environment
     line: "export OCTAVE_THETA_PATH={{ octave_prediction.predict_thetas_location }}"
 
-- name: Set Chromedriver location as an environment variable to allow Football Core to place bets and scrape odds
+- name: Set admin email as an environment variable for Football Core to send notifications to
   lineinfile:
     path: /home/football-core/.environment
-    line: "export CHROMEDRIVER_PATH={{ scrape_deps.chromedriver }}"
+    line: "export ADMIN_EMAIL={{ email_secrets.admin_email.username }}"
 
-- name: Set admin email for Football Core to send notifications to
+- name: Set email for Football Core to send emails from as an environment variable
   lineinfile:
     path: /home/football-core/.environment
-    line: "export ADMIN_EMAIL={{ email_and_bet_secrets.admin_email.username }}"
+    line: "export SENDING_EMAIL_ACC={{ email_secrets.sending_email.username }}"
 
-- name: Set email for Football Core to send emails from
+- name: Set password for Football Core to send emails from as an environment variable
   lineinfile:
     path: /home/football-core/.environment
-    line: "export SENDING_EMAIL_ACC={{ email_and_bet_secrets.sending_email.username }}"
+    line: "export SENDING_EMAIL_PASS={{ email_secrets.sending_email.password }}"
 
-- name: Set password for Football Core to send emails from
-  lineinfile:
-    path: /home/football-core/.environment
-    line: "export SENDING_EMAIL_PASS={{ email_and_bet_secrets.sending_email.password }}"
+- name: Add directory for Betfair P12 cert
+  file:
+    state: directory
+    path: "{{ betfair.p12.dir }}"
+    mode: '0700'
+    owner: football-core
+    group: football-core
 
-- name: Set email for Unibet account
-  lineinfile:
-    path: /home/football-core/.environment
-    line: "export UNIBET_USER={{ email_and_bet_secrets.unibet.username }}"
+- name: Copy P12 cert to remote machine
+  copy:
+    src: "../files/{{ betfair.p12.name }}"
+    dest: "{{ betfair.p12.dir }}/{{ betfair.p12.name }}"
+    mode: '0400'
+    owner: football-core
+    group: football-core
 
-- name: Set password for Unibet account
+- name: Set Betfair P12 cert path (used to log into Betfair API) as an environment variable
   lineinfile:
     path: /home/football-core/.environment
-    line: "export UNIBET_PASS={{ email_and_bet_secrets.unibet.password }}"
+    line: "export BETFAIR_P12_PATH={{ betfair.p12.dir }}/{{ betfair.p12.name }}"
+
+- name: Set Betfair P12 cert password as an environment variable
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export BETFAIR_P12_PASS={{ betfair_secrets.p12.password }}"
+
+- name: Set Betfair account username as an environment variable
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export BETFAIR_ACC_USER={{ betfair_secrets.account.username }}"
+
+- name: Set Betfair account password as an environment variable
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export BETFAIR_ACC_PASS={{ betfair_secrets.account.password }}"
+
+- name: Set Betfair app key as an environment variable
+  lineinfile:
+    path: /home/football-core/.environment
+    line: "export BETFAIR_APP_KEY={{ betfair_secrets.app_key }}"

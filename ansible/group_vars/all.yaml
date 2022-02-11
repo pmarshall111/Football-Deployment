@@ -24,9 +24,10 @@ sites:
     ssh_key_name: football-core
 
 octave_prediction:
-  predict_url: /home/football-core/octave-prediction/logisticRegression/FootballTrainingProbabilitiesScorePredict.m
-  predict_thetas_location: /home/football-core/octave-prediction/logisticRegression/logistic_regression_thetas.csv
+  predict_url: /home/football-core/octave-prediction/logisticRegression/FootballTrainingPredict.m
+  predict_thetas_location: /home/football-core/octave-prediction/logisticRegression/standard_log_reg_thetas.csv
 
-scrape_deps:
-  directory: /home/football-core/deps
-  geckodriver: /home/football-core/deps/geckodriver
+betfair:
+  p12:
+    dir: /home/football-core/keys
+    name: client-2048.p12
