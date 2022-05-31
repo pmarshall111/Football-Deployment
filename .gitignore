@@ -1,7 +1,8 @@
-.terraform
+*.terraform
 *.tfvars
 *.tfvars.json
 TerraformFootball.iml
 tf_ansible_vars.yaml
 *secrets.json
 *.p12
+*.tfstate*

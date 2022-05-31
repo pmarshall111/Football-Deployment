@@ -4,10 +4,10 @@
   become: true
 
   roles:
-#    - users
-#    - nginx
-#    - apache2
-#    - tomcat
-#    - octave
-#    - letsencrypt
+    - users
+    - nginx
+    - apache2
+    - tomcat
+    - octave
+    - letsencrypt
     - application-specific
