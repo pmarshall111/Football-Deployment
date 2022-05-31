@@ -1,0 +1,17 @@
+---
+- name: Add MySQL football_betting database
+  mysql_db:
+    name: football_betting
+    login_user: "{{ terraform_vars.db_username }}"
+    login_password: "{{ terraform_vars.db_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+# mysql_secure_installation
+- name: Remove MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ terraform_vars.db_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock

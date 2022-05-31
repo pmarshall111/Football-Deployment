@@ -23,8 +23,9 @@ module "compute-instance" {
   instance_display_name = "Oracle Football Betting"
   public_ip = "RESERVED"
   shape = "VM.Standard.A1.Flex"
+  user_data = filebase64("../scripts/setup_ansible_user.sh")
 }
 
 output "football_ip" {
-  value = module.compute-instance.public_ip
+  value = module.compute-instance.public_ip[0]
 }

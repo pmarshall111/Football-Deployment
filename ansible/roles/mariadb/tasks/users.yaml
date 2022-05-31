@@ -1,0 +1,34 @@
+---
+- name: Update MySQL root password for root account
+  mysql_user:
+    login_user: root
+    login_password: ''
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name: root
+    password: "{{ terraform_vars.db_password }}"
+    priv: "*.*:ALL,GRANT"
+    host_all: true
+    check_implicit_admin: true
+  ignore_errors: true
+
+- name: Add MySQL user for football betting
+  mysql_user:
+    name: "{{ terraform_vars.db_username }}"
+    host_all: true
+    password: "{{ terraform_vars.db_password }}"
+    update_password: on_create
+    login_user: root
+    login_password: "{{ terraform_vars.db_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    check_implicit_admin: yes
+
+
+# mysql_secure_installation
+- name: Delete anonymous MySQL user
+  mysql_user:
+    name: ""
+    host_all: true
+    state: absent
+    login_user: root
+    login_password: "{{ terraform_vars.db_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock

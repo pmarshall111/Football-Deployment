@@ -1,0 +1,14 @@
+---
+- name: Install MariaDB
+  apt: name="{{ item }}" state=latest update_cache=yes
+  loop:
+    - mysql-server
+    - python3-pymysql #required for mysql_user module
+
+- name: Ensure mysql is enabled to run on startup
+  service: name=mysql state=started enabled=true
+
+- name: Include Terraform variables used to setup the DB
+  include_vars:
+    file: ../../../../terraform.tfvars.json
+    name: terraform_vars

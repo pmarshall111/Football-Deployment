@@ -10,10 +10,12 @@
     state: directory
     mode: 0755
 
-- name: Create script for Tomcat to register env variables
-  file:
-    path: /var/lib/tomcat9/bin/setenv.sh
-    state: file
+- name: Create file to contain script that will register env variables for Tomcat
+  copy:
+    content: ""
+    dest: /var/lib/tomcat9/bin/setenv.sh
+    force: no
+    mode: 0644
 
 - name: Set RDS URL as environment variable to allow Football Betting API to connect
   lineinfile:

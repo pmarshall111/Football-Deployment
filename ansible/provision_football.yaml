@@ -1,13 +1,15 @@
 ---
 - name: Install all dependencies required for the Frontend, API and Core modules
-  hosts: aws_instance
+  hosts: compute_instance
   become: true
 
   roles:
     - users
+    - iptables
     - nginx
     - apache2
     - tomcat
     - octave
     - letsencrypt
+    - mariadb
     - application-specific
