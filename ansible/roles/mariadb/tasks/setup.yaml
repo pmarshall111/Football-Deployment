@@ -12,3 +12,10 @@
   include_vars:
     file: ../../../../terraform.tfvars.json
     name: terraform_vars
+
+- name: Allow remote access to MySQL
+  replace:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address\s+= 127.0.0.1.*$'
+    replace: 'bind-address = 0.0.0.0'
+  notify: Restart MySQL
