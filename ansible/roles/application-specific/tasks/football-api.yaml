@@ -4,3 +4,11 @@
     dest: /etc/sudoers.d/tomcat-github-actions
     content: |
       tomcat-github-actions ALL=(ALL) NOPASSWD:/bin/systemctl restart tomcat9
+
+- name: Add tomcat-github-actions user to the tomcat group
+  user:
+    name: "{{item.user}}"
+    groups: tomcat
+    append: yes
+  when: item.isApi
+  with_items: "{{sites}}"

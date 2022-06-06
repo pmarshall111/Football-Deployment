@@ -6,3 +6,4 @@ tf_ansible_vars.yaml
 *secrets.json
 *.p12
 *.tfstate*
+*.terraform.lock.hcl

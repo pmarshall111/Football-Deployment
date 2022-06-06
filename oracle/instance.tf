@@ -17,7 +17,7 @@ module "compute-instance" {
   compartment_ocid = oci_identity_compartment.football_compartment.id
   instance_flex_memory_in_gbs = 24
   instance_flex_ocpus = 4
-  source_ocid = data.oci_core_images.os.images[0].id
+  source_ocid = "ocid1.image.oc1.uk-london-1.aaaaaaaahrkctm2pjffanvzo3w3fwqv2mrqyzktdaonfnxbjjeesa6g5bb6q"
   ssh_public_keys = file("/home/peter/.ssh/nopass.pub")
   subnet_ocids = [oci_core_subnet.vcn-public-subnet.id]
   instance_display_name = "Oracle Football Betting"

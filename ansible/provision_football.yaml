@@ -4,12 +4,12 @@
   become: true
 
   roles:
-    - users
-    - iptables
-    - nginx
-    - apache2
-    - tomcat
-    - octave
-    - letsencrypt
-    - mariadb
+#    - users
+#    - iptables
+#    - nginx
+#    - apache2
+#    - tomcat
+#    - octave
+#    - letsencrypt
+#    - mariadb
     - application-specific

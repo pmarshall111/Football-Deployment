@@ -15,6 +15,15 @@ module "vcn" {
   create_service_gateway = true
 }
 
+# Learn our public IP address
+data "http" "my-IP" {
+  url = "http://ipv4.icanhazip.com"
+}
+
+output "my-IP" {
+  value = chomp(data.http.my-IP.body)
+}
+
 
 resource "oci_core_security_list" "security-list" {
   # Required
@@ -94,13 +103,25 @@ resource "oci_core_security_list" "security-list" {
 
   ingress_security_rules {
     stateless = false
-    source = "0.0.0.0/0"
+    source = "${chomp(data.http.my-IP.body)}/32"
     source_type = "CIDR_BLOCK"
     # Get protocol numbers from https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml TCP is 6
     protocol = "6"
     tcp_options {
       min = 3306
       max = 3306
+    }
+  }
+
+  ingress_security_rules {
+    stateless = false
+    source = "${chomp(data.http.my-IP.body)}/32"
+    source_type = "CIDR_BLOCK"
+    # Get protocol numbers from https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml TCP is 6
+    protocol = "6"
+    tcp_options {
+      min = 8000
+      max = 8000
     }
   }
 
