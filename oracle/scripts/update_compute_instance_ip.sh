@@ -18,6 +18,15 @@ then
 else
     echo "alias ssh-oracle-dev='ssh ubuntu@$INSTANCE_IP'" >> /home/peter/.bashrc
 fi
+echo ".BASHRC ALIAS: Updating oracle-proxy alias in /home/peter/.bashrc"
+if grep -q "oracle-proxy" /home/peter/.bashrc
+then
+alias oracle-proxy='ssh -D 31288 -f -C -q -N ubuntu@$INSTANCE_IP'
+
+    sed -i "s/alias oracle-proxy.*/alias oracle-proxy='ssh -D 31288 -f -C -q -N ubuntu@$INSTANCE_IP'/" /home/peter/.bashrc
+else
+    echo "alias oracle-proxy=alias oracle-proxy='ssh -D 31288 -f -C -q -N ubuntu@$INSTANCE_IP'" >> /home/peter/.bashrc
+fi
 source /home/peter/.bashrc
 
 #update ip for ansible

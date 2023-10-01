@@ -10,9 +10,9 @@ chmod -R 774 TerraformFootball
 chgrp -R ansible TerraformFootball
 ```
 
-2. Setup EC2 server with Terraform:
+2. Setup EC2 server with Terraform. Use -var-file to specify the file containing terraform variables:
 ```bash
-terraform apply
+terraform apply -var-file {...}
 ```
 
 3. Update the IP of the ansible host and add an entry to your hosts file.
