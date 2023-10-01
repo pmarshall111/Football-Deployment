@@ -63,11 +63,6 @@
     path: /home/football-core/.environment
     line: "export SENDING_EMAIL_ACC={{ email_secrets.sending_email.username }}"
 
-- name: Set password for Football Core to send emails from as an environment variable
-  lineinfile:
-    path: /home/football-core/.environment
-    line: "export SENDING_EMAIL_PASS={{ email_secrets.sending_email.password }}"
-
 - name: Add directory for Betfair P12 cert
   file:
     state: directory

@@ -7,3 +7,4 @@ tf_ansible_vars.yaml
 *.p12
 *.tfstate*
 *.terraform.lock.hcl
+.idea
